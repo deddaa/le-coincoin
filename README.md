@@ -2,6 +2,7 @@
 site de petites annonces style LeBoncoin
 
 # organisation du projet
+```
 le-coincoin/
 ┣ backend/
 ┃ ┣ config/
@@ -30,3 +31,15 @@ le-coincoin/
 ┃   ┗ js/
 ┣ .gitignore
 ┗ README.md
+```
+
+# les Stacks :
+front :
+- html
+- tailwind
+- javaScript
+
+back :
+- javaScript
+- NodeJs + express
+- BDD mySQL
