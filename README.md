@@ -43,3 +43,23 @@ back :
 - javaScript
 - NodeJs + express
 - BDD mySQL
+
+# Lancer le serveur :
+
+### Prérequis :
+- `Node.js` installé
+
+### Démarrage :
+
+Naviguez vers le dossier `backend` :
+
+```bash
+cd le-coincoin/backend
+```
+Installer les dépendances (`npm install`)
+
+Lancez le serveur :
+
+```bash
+npm run dev
+```
