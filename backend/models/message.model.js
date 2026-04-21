@@ -49,6 +49,21 @@ export const createMessage = async ({
   }
 };
 
+/*export const addmessage = async ({ ads_id, sender_id, receiver_id, content }) => {
+  try {
+    return await Message.findByIdAndUpdate(
+      { ads_id, sender_id, receiver_id},
+      { $push: { content } },
+      { new: true }
+    )
+  } catch (error) {
+    console.error("erreur addmessage : ", error);
+    throw error;
+  }
+}*/
+
+//export const addReaction = async ({})
+
 export const deleteMessage = async (id) => {
   try {
     const result = await Message.findByIdAndDelete(id);
