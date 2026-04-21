@@ -1,8 +1,10 @@
 import cors from "cors";
+import dotenv from "dotenv";
 import helmet from "helmet";
 import express from "express";
 import authRoutes from "./routes/auth.routes.js";
-import dotenv from "dotenv";
+import annoncesRoutes from "./routes/annonce.routes.js";
+import messageRoutes from "./routes/messages.routes.js";
 
 //----------------------------------------
 
@@ -25,6 +27,10 @@ app.use(express.json());
 //----------------------------------------
 
 app.use("/api/auth", authRoutes);
+
+app.use("/api/message", messageRoutes);
+
+app.use("/api/annonce", annoncesRoutes);
 
 
 
