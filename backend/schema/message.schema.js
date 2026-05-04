@@ -13,6 +13,7 @@ const contentSchema = new mongoose.Schema({
     type: Number,
     required: true,
   },
+  
   content: { type: String, required: true },
   timestamp: {
     type: Date,
@@ -21,16 +22,12 @@ const contentSchema = new mongoose.Schema({
   reactions : {type : [reactionSchema] }
 });
 
-const messageSchema = new mongoose.Schema({
+const convSchema = new mongoose.Schema({
     ads_id: {
         type : Number,
         required : true
     },
-    attendees : {type : [number]},
-    sender_id: {
-        type : Number,
-        required : true
-    },
+    //attendees : {type : [Number]},
     receiver_id: {
         type: Number,
         required : true
@@ -45,6 +42,6 @@ const messageSchema = new mongoose.Schema({
     }
 })
 
-const Message = mongoose.model("message", messageSchema)
+const Message = mongoose.model("message", convSchema)
 
 export default Message

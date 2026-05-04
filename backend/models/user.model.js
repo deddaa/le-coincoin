@@ -20,9 +20,9 @@ export const findUsersByEmail = async (email) => {
     }
 }
 
-export const createUser = async ({email , username , password_hash}) => {
+export const createUser = async ({email , username , password}) => {
     try {
-        const [result] = await db.query("INSERT INTO users (email, username, password_hash) VALUES (?, ?, ?)", [email, username, password_hash])
+        const [result] = await db.query("INSERT INTO users (email, username, password) VALUES (?, ?, ?)", [email, username, password])
         return result
     } catch (error) {
         console.error("erreur createUser : ", error);

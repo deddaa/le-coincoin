@@ -49,7 +49,7 @@ export const createMessage = async ({
   }
 };
 
-/*export const addmessage = async ({ ads_id, sender_id, receiver_id, content }) => {
+export const addmessage = async ({ ads_id, sender_id, receiver_id, content }) => {
   try {
     return await Message.findByIdAndUpdate(
       { ads_id, sender_id, receiver_id},
@@ -60,7 +60,7 @@ export const createMessage = async ({
     console.error("erreur addmessage : ", error);
     throw error;
   }
-}*/
+}
 
 //export const addReaction = async ({})
 

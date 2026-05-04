@@ -1,0 +1,9 @@
+function Title({ title }) {
+  return (
+    <h1 className="text-slate-900 text-center text-3xl font-bold dark:text-slate-50">
+      {title}
+    </h1>
+  );
+}
+
+export default Title;

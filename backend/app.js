@@ -2,6 +2,7 @@ import cors from "cors";
 import dotenv from "dotenv";
 import helmet from "helmet";
 import express from "express";
+import cookieParser from "cookie-parser";
 import authRoutes from "./routes/auth.routes.js";
 import annoncesRoutes from "./routes/annonce.routes.js";
 import messageRoutes from "./routes/messages.routes.js";
@@ -23,6 +24,8 @@ app.use(cors(
 ));
 
 app.use(express.json());
+
+app.use(cookieParser());
 
 //----------------------------------------
 

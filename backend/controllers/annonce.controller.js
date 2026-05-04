@@ -18,7 +18,7 @@ export const createAnnonce = async (req,res) => {
     try {
         const { name , description , price , image_url ,category_id} = req.body;
         const image = req.file ? req.file.path : null;
-        const user_id = 1; /*req.user.id*/ 
+        const user_id = req.user.id ;
 
         const { error } = annonceSchema.validate({ name ,description , price , image_url});
         if (error) {
