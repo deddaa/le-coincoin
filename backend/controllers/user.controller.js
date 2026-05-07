@@ -2,6 +2,27 @@ import argon2 from "argon2";
 import { registerSchema } from "../validations/auth.validation.js";
 import { createUser , findUsersByEmail } from "../models/user.model.js";
 import jwt from "jsonwebtoken";
+
+const COOKIE_OPTIONS = {
+  httpOnly: true,
+  sameSite: "strict",
+  maxAge: 24*60*60*1000
+}
+
+function generateToken(payload) {
+    const accesToken= jwt.sign(
+        payload,
+        process.env.JWT_SECRET,
+        {expiresIn: "15m"}
+    )
+    const refreshToken = jwt.sign(
+      payload,
+      process.env.JWT_REFRESH_SECRET,
+      { expiresIn: "7d" }
+    )
+    return { accesToken, refreshToken }
+}
+
 export const register = async (req,res) => {
     try {
         const { email, password, username } = req.body
@@ -28,10 +49,13 @@ export const register = async (req,res) => {
 }
 
 
-export const login = async (req, res) => {
+export const login = async (req, res, next) => {
   try {
     console.log(req.body)
     const { email, password } = req.body;
+    if(!email || !password) {
+      return res.status(400).json({ message: "Email et mot de passe sont requis" });
+    }
 
     const user = await findUsersByEmail(email);
     console.log("user trouvé :", user);
@@ -48,22 +72,49 @@ export const login = async (req, res) => {
       return res.status(401).json({ message: "Email ou mot de passe incorrect" });
     }
 
-    const token = jwt.sign(
+    /*const token = jwt.sign(
       { id: user.id, email: user.email, username: user.username },
       process.env.JWT_SECRET,
-      { expiresIn: "1d" }
+      { expiresIn: "15m" }
     );
-    console.log("Token généré :", token);
+    console.log("Token généré :", token);*/
 
-    res.cookie("token", token, {
+    const { accesToken, refreshToken } = generateToken({ id: user.id, email: user.email, username: user.username });
+
+    /*res.cookie("token", token, {
       httpOnly: true,
       sameSite: "strict",
       maxAge: 24 * 60 * 60 * 1000
-    });
-
-    res.status(200).json({ message: "Connexion réussie !" });
+    });*/
+    res.cookie("refreshToken", refreshToken, COOKIE_OPTIONS);
+    res.status(200).json({ message: "Connexion réussie !", accesToken });
   } catch (error) {
+    next(error);
     console.error("Erreur dans login : ", error);
     res.status(500).json({ message: "Erreur serveur" });
   }
 };
+
+export const refresh = async (req, res) => {
+  try {
+    const refreshTokenOld = req.cookies.refreshToken;
+    if(!refreshTokenOld) {
+      return res.status(401).json({ message: "Topken manquant"});
+    }
+    let payload;
+    try {
+      payload = jwt.verify(refreshTokenOld, process.env.JWT_REFRESH_SECRET);
+    } catch (error) {
+      return res.status(401).json({ message: "Topken invalide ou expiré"});
+    }
+    const user = await findUsersByEmail(payload.email);
+    if(!user) {
+      return res.status(401).json({ message: "Utilisateur non trouvé"});
+    }
+    const { accessToken, refreshToken } = generateToken({ id: user.id, email: user.email, username: user.username });
+    res.cookie("refreshToken", refreshToken, COOKIE_OPTIONS);
+    res.status(200).json({ accessToken });
+  } catch (error) {
+    next(error);
+  }
+}

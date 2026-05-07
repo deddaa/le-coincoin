@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import api from "../../services/api.service";
+import api, {setAccessToken} from "../../services/api.service";
 import Title from "./Title";
+
 
 function FormLogin() {
      const navigate = useNavigate();
@@ -16,8 +17,11 @@ function FormLogin() {
       const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-          await api.post("/auth/login", form);
-          console.log(form)
+          const response = await api.post("/auth/login", form);
+          setAccessToken(response.data.accesToken);
+          const decoded = JSON.parse(atob(response.data.accesToken.split(".")[1]));
+          const user = { id: decoded.id, email: decoded.email, username: decoded.username };
+          console.log("utilisateur connecté : ", user);
           navigate("/");
           console.log("Login réussi !");  
         } catch (error) {

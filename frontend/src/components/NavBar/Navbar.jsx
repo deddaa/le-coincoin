@@ -1,30 +1,42 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import api from "../../services/api.service";
+import api, { setAccessToken } from "../../services/api.service";
+import axios from "axios";
 
 export function NavBar() {
   const [isOpen, setIsOpen] = useState(false);
   const [connected, setConnected] = useState(null);
   const navigate = useNavigate();
 
-  const handlelogout= async ()=> {
+  const handlelogout = async () => {
     try {
       await api.post("/auth/logout");
+      setAccessToken(null);
       setConnected(null);
       navigate("/login");
     } catch (error) {
       console.error(error);
     }
-  }
+  };
 
-  useEffect(()=> {
-    api.get("/auth/me")
-    .then(res => setConnected(res.data.user))
-    .catch(() => setConnected(null))
-  })
+useEffect(() => {
+  const init = async () => {
+    try {
+      const { data } = await axios.post(
+        "http://localhost:8080/api/auth/refresh",
+        { withCredentials: true },
+      );
+      setAccessToken(data.token);
+      const res = await api.get("/auth/me");
+      setConnected(res.data.user);
+    } catch (err) {
+      console.error("ERREUR :", err.response?.status, err.response?.data);
+      setConnected(null);
+    }
+  };
 
-
-
+  init();
+}, []);
   return (
     <nav className="bg-white border-b border-gray-100 shadow-sm sticky top-0 z-50">
       <div className="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
