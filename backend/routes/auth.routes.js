@@ -11,7 +11,7 @@ router.get("/me",authMiddleware, (req, res) => {
 });
 router.post("/refresh",refresh);
 router.post("/logout", (req, res) => {
-  res.clearCookie("token");
+  res.clearCookie("refreshToken", { httpOnly: true, sameSite: "lax" });
   res.json({ message: "Déconnecté !" });
 });
 

@@ -1,9 +1,13 @@
 import { db } from "../config/db.js";
 
 //récup les annonces
-export const getAllAnnonces = async () => {
+export const getAllAnnonces = async (search = "") => {
   try {
-    const [rows] = await db.query("SELECT * FROM annonces");
+    const query = search
+      ? "SELECT * FROM annonces WHERE name LIKE ? OR description LIKE ?"
+      : "SELECT * FROM annonces";
+    const params = search ? [`%${search}%`, `%${search}%`] : [];
+    const [rows] = await db.query(query, params);
     return rows;
   } catch (error) {
     console.error("Erreur getAllAnnonces : ", error);

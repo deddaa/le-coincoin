@@ -32,7 +32,7 @@ function Home() {
           Plateforme de petites annonces pour les passionnés de technologie
         </p>
         <h1 className="cursor-default text-8xl text-white text-center">
-          le <span className="hover:text-blue-600 transition-all duration-500">CoinCoin</span>
+          le <span className="hover:text-purple-600 transition-all duration-500">CoinCoin</span>
         </h1>
         <h2 className=" text-2xl text-gray-300 text-center max-w-xl">
           Les petites annonces , pour les fans de technologie

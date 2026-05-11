@@ -2,15 +2,16 @@ import { annonceSchema } from "../validations/annonce.validation.js";
 import * as annoncesModel from "../models/annonce.model.js";
 
 //récup toutes les annonces
-export const getAnnonces = async (req,res) => {
-    try {
-        const annonces = await annoncesModel.getAllAnnonces();
+export const getAnnonces = async (req, res) => {
+  try {
+    const search = req.query.search || "";
+    const annonces = await annoncesModel.getAllAnnonces(search);
 
-        res.status(200).json(annonces);
-    } catch (error) {
-        console.error("erreur getAnnonces : ", error);
-        res.status(500).json({ message : "Erreur serveur getAnnonces"});
-    }
+    res.status(200).json(annonces);
+  } catch (error) {
+    console.error("erreur getAnnonces : ", error);
+    res.status(500).json({ message: "Erreur serveur getAnnonces" });
+  }
 };
 
 // créer annonce

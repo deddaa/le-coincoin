@@ -12,7 +12,7 @@ function Login() {
                 to="/"
                 className="text-6xl font-bold text-gray-900 tracking-tight"
               >
-                Le <span className="text-blue-600">CoinCoin</span>
+                Le <span className="text-purple-600">CoinCoin</span>
               </Link>
             </div>
             <div className="p-6 rounded-lg bg-white border border-slate-300 shadow-xs md:p-8 dark:bg-neutral-800 dark:border-neutral-700">

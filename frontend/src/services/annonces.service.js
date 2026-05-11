@@ -1,7 +1,7 @@
 import api from "./api.service";
 
-export const getAllAnnonces = async () => {
-  const res = await api.get("/annonce");
+export const getAllAnnonces = async (search = "") => {
+  const res = await api.get(`/annonce?search=${search}`);
   return res.data;
 };
 

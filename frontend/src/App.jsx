@@ -4,8 +4,9 @@ import Home from "./pages/Home"
 import Login from "./pages/Login.jsx"
 import Register from "./pages/Register.jsx"
 import Navbar from "./components/NavBar/Navbar.jsx"
-import Annonce from './pages/Annonces.jsx'
+import Annonce from './pages/Annonce.jsx'
 import Footer from './components/layout/Footer.jsx'
+import Annonces from './pages/Annonces.jsx'
 
 function App() {
 
@@ -16,6 +17,7 @@ function App() {
         <main className="flex-1">
           <Routes>
             <Route path="/" element={<Home />} />
+            <Route path="/annonces"    element={<Annonces />} />
             <Route path="/annonces/:id" element={<Annonce />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />

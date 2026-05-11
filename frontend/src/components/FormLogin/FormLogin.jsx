@@ -18,11 +18,12 @@ function FormLogin() {
         e.preventDefault();
         try {
           const response = await api.post("/auth/login", form);
-          setAccessToken(response.data.accesToken);
-          const decoded = JSON.parse(atob(response.data.accesToken.split(".")[1]));
+          setAccessToken(response.data.accessToken);
+          const decoded = JSON.parse(atob(response.data.accessToken.split(".")[1]));
           const user = { id: decoded.id, email: decoded.email, username: decoded.username };
           console.log("utilisateur connecté : ", user);
           navigate("/");
+          window.location.reload();
           console.log("Login réussi !");  
         } catch (error) {
           setError(error.message);
@@ -47,7 +48,7 @@ function FormLogin() {
               placeholder="lemail@coincoin.fr"
               required
               onChange={handleChange}
-              className="px-3 py-2.5 text-sm text-slate-900 rounded-md bg-white w-full outline-1 -outline-offset-1 outline-slate-300 focus:outline-2 focus:-outline-offset-2 focus:outline-blue-600 dark:text-slate-50 dark:bg-neutral-700 dark:outline-neutral-600"
+              className="px-3 py-2.5 text-sm text-slate-900 rounded-md bg-white w-full outline-1 -outline-offset-1 outline-slate-300 focus:outline-2 focus:-outline-offset-2 focus:outline-purple-600 dark:text-slate-50 dark:bg-neutral-700 dark:outline-neutral-600"
             />
           </div>
           <div>
@@ -64,13 +65,13 @@ function FormLogin() {
               placeholder="••••••••"
               required
               onChange={handleChange}
-              className="px-3 py-2.5 text-sm text-slate-900 rounded-md bg-white w-full outline-1 -outline-offset-1 outline-slate-300 focus:outline-2 focus:-outline-offset-2 focus:outline-blue-600 dark:text-slate-50 dark:bg-neutral-700 dark:outline-neutral-600"
+              className="px-3 py-2.5 text-sm text-slate-900 rounded-md bg-white w-full outline-1 -outline-offset-1 outline-slate-300 focus:outline-2 focus:-outline-offset-2 focus:outline-purple-600 dark:text-slate-50 dark:bg-neutral-700 dark:outline-neutral-600"
             />
           </div>
 
           <button
             onClick={handleSubmit}
-            className="w-full py-2 px-3.5 text-sm rounded-md font-semibold cursor-pointer tracking-wide text-white border border-blue-600 bg-blue-600 hover:bg-blue-700 transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
+            className="w-full py-2 px-3.5 text-sm rounded-md font-semibold cursor-pointer tracking-wide text-white border border-purple-600 bg-purple-600 hover:bg-purple-700 transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-purple-500"
           >
             Sign in
           </button>
@@ -79,7 +80,7 @@ function FormLogin() {
             Pas de compte ?{" "}
             <a
               href="/Register"
-              className="text-blue-700 hover:underline ml-1 font-medium dark:text-blue-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 rounded"
+              className="text-purple-700 hover:underline ml-1 font-medium dark:text-purple-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-purple-500 rounded"
             >
               Inscription
             </a>

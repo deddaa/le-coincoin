@@ -5,12 +5,12 @@ import jwt from "jsonwebtoken";
 
 const COOKIE_OPTIONS = {
   httpOnly: true,
-  sameSite: "strict",
+  sameSite: "lax",
   maxAge: 24*60*60*1000
 }
 
 function generateToken(payload) {
-    const accesToken= jwt.sign(
+    const accessToken= jwt.sign(
         payload,
         process.env.JWT_SECRET,
         {expiresIn: "15m"}
@@ -20,7 +20,7 @@ function generateToken(payload) {
       process.env.JWT_REFRESH_SECRET,
       { expiresIn: "7d" }
     )
-    return { accesToken, refreshToken }
+    return { accessToken, refreshToken }
 }
 
 export const register = async (req,res) => {
@@ -79,7 +79,7 @@ export const login = async (req, res, next) => {
     );
     console.log("Token généré :", token);*/
 
-    const { accesToken, refreshToken } = generateToken({ id: user.id, email: user.email, username: user.username });
+    const { accessToken, refreshToken } = generateToken({ id: user.id, email: user.email, username: user.username });
 
     /*res.cookie("token", token, {
       httpOnly: true,
@@ -87,7 +87,8 @@ export const login = async (req, res, next) => {
       maxAge: 24 * 60 * 60 * 1000
     });*/
     res.cookie("refreshToken", refreshToken, COOKIE_OPTIONS);
-    res.status(200).json({ message: "Connexion réussie !", accesToken });
+    console.log("Access token généré :", accessToken, "Refresh token généré :", refreshToken);
+    res.status(200).json({ message: "Connexion réussie !", accessToken });
   } catch (error) {
     next(error);
     console.error("Erreur dans login : ", error);
@@ -95,17 +96,18 @@ export const login = async (req, res, next) => {
   }
 };
 
-export const refresh = async (req, res) => {
+export const refresh = async (req, res, next) => {
+  console.log("Requête de refresh reçue, cookies :", req.cookies.refreshToken);
   try {
     const refreshTokenOld = req.cookies.refreshToken;
     if(!refreshTokenOld) {
-      return res.status(401).json({ message: "Topken manquant"});
+      return res.status(401).json({ message: "Token refresh manquant"});
     }
     let payload;
     try {
       payload = jwt.verify(refreshTokenOld, process.env.JWT_REFRESH_SECRET);
     } catch (error) {
-      return res.status(401).json({ message: "Topken invalide ou expiré"});
+      return res.status(401).json({ message: "Token refresh invalide ou expiré"});
     }
     const user = await findUsersByEmail(payload.email);
     if(!user) {
